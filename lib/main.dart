@@ -1,0 +1,39 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
+import 'screens/home_screen.dart';
+import 'theme/app_theme.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LiquidGlassWidgets.initialize();
+
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: AppColors.darkNav,
+      systemNavigationBarIconBrightness: Brightness.light,
+    ),
+  );
+
+  runApp(
+    LiquidGlassWidgets.wrap(
+      child: const SneakerCommerceApp(),
+    ),
+  );
+}
+
+class SneakerCommerceApp extends StatelessWidget {
+  const SneakerCommerceApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Sneaker Collections',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      home: const HomeScreen(),
+    );
+  }
+}
