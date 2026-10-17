@@ -47,9 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _navigateToCart() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => const PaymentMethodScreen(),
-      ),
+      MaterialPageRoute(builder: (context) => const PaymentMethodScreen()),
     );
   }
 
@@ -108,7 +106,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Searching for "${_searchController.text}"'),
+                      content: Text(
+                        'Searching for "${_searchController.text}"',
+                      ),
                       backgroundColor: AppColors.darkNav,
                       behavior: SnackBarBehavior.floating,
                       shape: RoundedRectangleBorder(
@@ -230,7 +230,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               onTap: () {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: const Text('Viewing all popular sneakers'),
+                                    content: const Text(
+                                      'Viewing all popular sneakers',
+                                    ),
                                     backgroundColor: AppColors.darkNav,
                                     behavior: SnackBarBehavior.floating,
                                     shape: RoundedRectangleBorder(
@@ -272,8 +274,8 @@ class _HomeScreenState extends State<HomeScreen> {
               left: 0,
               right: 0,
               bottom: 0,
-              child: (Theme.of(context).platform == TargetPlatform.iOS ||
-                      defaultTargetPlatform == TargetPlatform.iOS)
+              child: (defaultTargetPlatform == TargetPlatform.iOS ||
+                      Theme.of(context).platform == TargetPlatform.iOS)
                   ? LiquidGlassBottomNavigationBar(
                       selectedIndex: _currentNavIndex,
                       onTabSelected: (index) {
@@ -356,10 +358,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     offset: const Offset(0, 4),
                   ),
                 ],
-                border: Border.all(
-                  color: const Color(0xFFF0F0F4),
-                  width: 1.0,
-                ),
+                border: Border.all(color: const Color(0xFFF0F0F4), width: 1.0),
               ),
               child: const Icon(
                 Icons.search_rounded,

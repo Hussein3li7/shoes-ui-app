@@ -65,7 +65,7 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
     this.borderRadius = 32.0,
 
     // Murafaati / modern light UI accent.
-    this.accentColor = const Color(0xFF63D6C4),
+    this.accentColor = const Color.fromARGB(255, 28, 140, 123),
 
     // IMPORTANT:
     // Do NOT use white here because the screen background is white.
@@ -108,26 +108,16 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
 
     final tabs = items.map((item) {
       return GlassTab(
-        icon: Icon(
-          item.icon,
-          color: unselectedColor,
-        ),
-        activeIcon: Icon(
-          item.activeIcon ?? item.icon,
-          color: accentColor,
-        ),
+        icon: Icon(item.icon, color: unselectedColor),
+        activeIcon: Icon(item.activeIcon ?? item.icon, color: accentColor),
         label: item.label,
-        glowColor:
-            item.glowColor ??
-            accentColor.withValues(alpha: 0.22),
+        // glowColor: item.glowColor ?? accentColor.withValues(alpha: 0.22),
       );
     }).toList();
 
-    final safeSelectedIndex =
-        selectedIndex.clamp(0, tabs.length - 1);
+    final safeSelectedIndex = selectedIndex.clamp(0, tabs.length - 1);
 
-    final indicatorTint =
-        accentColor.withValues(alpha: 0.16);
+    final indicatorTint = accentColor.withValues(alpha: 0.16);
 
     return GlassTabBar.bottom(
       tabs: tabs,
@@ -139,7 +129,6 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
       // ----------------------------------------------------------
       // SIZE
       // ----------------------------------------------------------
-
       barHeight: barHeight,
 
       barBorderRadius: borderRadius,
@@ -159,7 +148,6 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
       // ----------------------------------------------------------
       // INDICATOR
       // ----------------------------------------------------------
-
       showIndicator: true,
 
       indicatorColor: indicatorTint,
@@ -182,17 +170,14 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
       // ----------------------------------------------------------
       // LABEL COLORS
       // ----------------------------------------------------------
-
       selectedLabelColor: accentColor,
 
       // Dark grey instead of translucent white.
-      unselectedLabelColor:
-          unselectedColor.withValues(alpha: 0.72),
+      unselectedLabelColor: unselectedColor.withValues(alpha: 0.72),
 
       // ----------------------------------------------------------
       // GLOW
       // ----------------------------------------------------------
-
       glowBlurRadius: 20,
 
       glowSpreadRadius: 2,
@@ -202,17 +187,14 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
       // ----------------------------------------------------------
       // TYPOGRAPHY
       // ----------------------------------------------------------
-
-      selectedLabelStyle:
-          GoogleFonts.plusJakartaSans(
+      selectedLabelStyle: GoogleFonts.plusJakartaSans(
         fontSize: 10.5,
         fontWeight: FontWeight.w700,
         letterSpacing: -0.1,
         color: accentColor,
       ),
 
-      unselectedLabelStyle:
-          GoogleFonts.plusJakartaSans(
+      unselectedLabelStyle: GoogleFonts.plusJakartaSans(
         fontSize: 10.5,
         fontWeight: FontWeight.w500,
         letterSpacing: -0.1,
@@ -222,58 +204,24 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
       // ----------------------------------------------------------
       // MAIN GLASS
       // ----------------------------------------------------------
-
       settings: LiquidGlassSettings(
-        // Slightly thinner than the previous version.
-        thickness: 22,
-
-        // Enough blur to create glass without washing everything out.
-        blur: 16,
-
-        refractiveIndex: 1.22,
-
-        chromaticAberration: 0.006,
-
+        thickness: 2,
+        blur: 0,
+        refractiveIndex: 1.02,
+        chromaticAberration: 0.0,
         lightAngle: GlassDefaults.lightAngle,
-
-        // Lower light intensity prevents a white-looking surface.
-        lightIntensity: 0.42,
-
-        ambientStrength: 0.18,
-
-        saturation: 1.05,
-
-        // IMPORTANT:
-        // Previously:
-        // Color(0x14FFFFFF)
-        //
-        // That is almost invisible on a white background.
-        //
-        // Use a very subtle neutral grey glass tint instead.
-        glassColor: const Color(0xD9F4F5F6),
-
-        specularSharpness:
-            GlassSpecularSharpness.medium,
-
-        shadowElevation: 4.0,
-
+        lightIntensity: 0.22,
+        ambientStrength: 0.08,
+        saturation: 1.0,
+        glassColor: const Color(0x18FFFFFF),
+        specularSharpness: GlassSpecularSharpness.medium,
+        shadowElevation: 3.0,
         shadow: [
           BoxShadow(
-            color: Colors.black.withValues(
-              alpha: 0.12,
-            ),
-            blurRadius: 24,
+            color: Colors.black.withValues(alpha: 0.10),
+            blurRadius: 20,
             spreadRadius: -5,
-            offset: const Offset(0, 8),
-          ),
-
-          BoxShadow(
-            color: Colors.black.withValues(
-              alpha: 0.04,
-            ),
-            blurRadius: 6,
-            spreadRadius: 0,
-            offset: const Offset(0, 2),
+            offset: const Offset(0, 7),
           ),
         ],
       ),
@@ -281,24 +229,34 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
       // ----------------------------------------------------------
       // ACTIVE INDICATOR GLASS
       // ----------------------------------------------------------
-
       indicatorSettings: LiquidGlassSettings(
-        thickness: 14,
+        // Keep the indicator visually glass-like,
+        // but avoid strong distortion during movement.
+        thickness: 4,
 
-        blur: 10,
+        // Very low blur.
+        blur: 0,
 
-        refractiveIndex: 1.16,
+        // Almost neutral refraction.
+        refractiveIndex: 1.01,
 
-        lightIntensity: 0.35,
+        // Disable chromatic distortion.
+        chromaticAberration: 0.0,
 
-        ambientStrength: 0.12,
+        lightAngle: GlassDefaults.lightAngle,
 
-        saturation: 1.05,
+        // Very subtle reflection.
+        lightIntensity: 0.18,
 
-        glassColor: indicatorTint,
+        // Minimal ambient effect.
+        ambientStrength: 0.05,
 
-        specularSharpness:
-            GlassSpecularSharpness.medium,
+        saturation: 1.0,
+
+        // Transparent glass.
+        glassColor: const Color(0x12000000),
+
+        specularSharpness: GlassSpecularSharpness.medium,
       ),
     );
   }
