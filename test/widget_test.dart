@@ -1,9 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:test_app/main.dart';
+import 'package:test_app/screens/home_screen.dart';
 import 'package:test_app/screens/product_details_screen.dart';
+import 'package:test_app/widgets/bottom_navigation.dart';
 import 'package:test_app/widgets/custom_curved_size_selector.dart';
 import 'package:test_app/widgets/featured_product_card.dart';
+import 'package:test_app/widgets/liquid_glass_bottom_nav_bar.dart';
 
 void main() {
   testWidgets('App loads and renders SneakerCommerceApp directly', (WidgetTester tester) async {
@@ -73,5 +77,32 @@ void main() {
 
     // Verify callback and updated center size
     expect(selected, isNot(30));
+  });
+
+  testWidgets('Renders LiquidGlassBottomNavigationBar on iOS platform and LuxuryBottomNav on other platforms', (WidgetTester tester) async {
+    // 1. Android (default) platform renders LuxuryBottomNav
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: HomeScreen(key: ValueKey('android_home')),
+      ),
+    );
+    await tester.pump();
+    expect(find.byType(LuxuryBottomNav), findsOneWidget);
+    expect(find.byType(LiquidGlassBottomNavigationBar), findsNothing);
+
+    // 2. iOS platform renders LiquidGlassBottomNavigationBar
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: HomeScreen(key: ValueKey('ios_home')),
+      ),
+    );
+    await tester.pump();
+    expect(find.byType(LiquidGlassBottomNavigationBar), findsOneWidget);
+    expect(find.byType(LuxuryBottomNav), findsNothing);
+
+    // Reset override
+    debugDefaultTargetPlatformOverride = null;
   });
 }

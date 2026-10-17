@@ -3,61 +3,55 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
-import 'package:flutter/services.dart';
-
 /// Navigation item model for [LiquidGlassBottomNavigationBar].
 class LiquidGlassNavItem {
   final String label;
   final IconData icon;
   final IconData? activeIcon;
   final Color? glowColor;
-  final int? badgeCount;
 
   const LiquidGlassNavItem({
     required this.label,
     required this.icon,
     this.activeIcon,
     this.glowColor,
-    this.badgeCount,
   });
 }
 
-/// A floating, pill-shaped Apple-style iOS 26 Liquid Glass Bottom Navigation Bar.
+/// Premium Liquid Glass Bottom Navigation Bar
 ///
-/// Built using [liquid_glass_widgets] and [GlassTabBar.bottom] for native shader
-/// refraction, chromatic aberration, specular reflections, dynamic blur,
-/// and smooth liquid pinch transitions between tabs.
+/// Designed specifically for light/white application backgrounds.
+///
+/// Visual direction:
+/// - Neutral translucent glass
+/// - Dark charcoal inactive icons
+/// - Mint/teal active state
+/// - Subtle shadow
+/// - Minimal Apple-inspired appearance
 class LiquidGlassBottomNavigationBar extends StatelessWidget {
-  /// The currently active tab index (0 to items.length - 1).
   final int selectedIndex;
 
-  /// Callback triggered when a tab is tapped.
   final ValueChanged<int> onTabSelected;
 
-  /// Custom navigation destinations. If null, defaults to the 5 standard iOS 26
-  /// destinations: Home, Search, Library, Favorites, Profile.
   final List<LiquidGlassNavItem>? customItems;
 
-  /// Height of the floating glass bar (default: 68.0, recommended: 64–72).
   final double barHeight;
 
-  /// Outer horizontal padding from the screen edge (default: 16.0).
-  /// Yields approximately 92% screen width on standard mobile viewports.
   final double horizontalPadding;
 
-  /// Bottom margin above the screen edge / system safe area (default: 12.0).
   final double bottomMargin;
 
-  /// Corner radius of the pill-shaped glass container (default: 32.0).
   final double borderRadius;
 
-  /// Elegant restrained iOS pink/red accent color for the selected tab indicator and icon.
+  /// Active color.
+  ///
+  /// Mint/teal is used to match the application's visual identity.
   final Color accentColor;
 
-  /// Unselected icon & label color (translucent white for liquid glass absorption).
+  /// Inactive icons are DARK because the application uses
+  /// a white/light background.
   final Color unselectedColor;
 
-  /// Glass quality tier (defaults to [GlassQuality.premium] for fixed navigation).
   final GlassQuality quality;
 
   const LiquidGlassBottomNavigationBar({
@@ -69,17 +63,17 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
     this.horizontalPadding = 16.0,
     this.bottomMargin = 12.0,
     this.borderRadius = 32.0,
-    this.accentColor = const Color(0xFFFF2D55), // Apple iOS System Pink / Coral-Red Accent
-    this.unselectedColor = const Color(0xB3FFFFFF), // Soft translucent white (70%)
+
+    // Murafaati / modern light UI accent.
+    this.accentColor = const Color(0xFF63D6C4),
+
+    // IMPORTANT:
+    // Do NOT use white here because the screen background is white.
+    this.unselectedColor = const Color(0xFF202124),
+
     this.quality = GlassQuality.premium,
   });
 
-  /// Default 5 destinations matching the reference layout:
-  /// 1. Home
-  /// 2. Search
-  /// 3. Library (with cart badge)
-  /// 4. Favorites (with wishlist badge)
-  /// 5. Profile
   static const List<LiquidGlassNavItem> defaultItems = [
     LiquidGlassNavItem(
       label: 'Home',
@@ -95,13 +89,11 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
       label: 'Library',
       icon: CupertinoIcons.square_stack_3d_up,
       activeIcon: CupertinoIcons.square_stack_3d_up_fill,
-      badgeCount: 3,
     ),
     LiquidGlassNavItem(
       label: 'Favorites',
       icon: CupertinoIcons.heart,
       activeIcon: CupertinoIcons.heart_fill,
-      badgeCount: 2,
     ),
     LiquidGlassNavItem(
       label: 'Profile',
@@ -114,107 +106,199 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = customItems ?? defaultItems;
 
-    // Convert items to native GlassTab configurations with badge support
     final tabs = items.map((item) {
-      Widget buildIcon(IconData iconData) {
-        final base = Icon(iconData);
-        if (item.badgeCount != null && item.badgeCount! > 0) {
-          return Badge(
-            backgroundColor: accentColor,
-            label: Text(
-              '${item.badgeCount}',
-              style: const TextStyle(
-                fontSize: 9,
-                fontWeight: FontWeight.w800,
-                color: Colors.white,
-              ),
-            ),
-            child: base,
-          );
-        }
-        return base;
-      }
-
       return GlassTab(
-        icon: buildIcon(item.icon),
-        activeIcon: buildIcon(item.activeIcon ?? item.icon),
+        icon: Icon(
+          item.icon,
+          color: unselectedColor,
+        ),
+        activeIcon: Icon(
+          item.activeIcon ?? item.icon,
+          color: accentColor,
+        ),
         label: item.label,
-        glowColor: item.glowColor ?? accentColor.withValues(alpha: 0.35),
+        glowColor:
+            item.glowColor ??
+            accentColor.withValues(alpha: 0.22),
       );
     }).toList();
 
-    // Subtle translucent pink/red indicator tint (avoids opaque red or heavy gradients)
-    final indicatorTint = accentColor.withValues(alpha: 0.18);
+    final safeSelectedIndex =
+        selectedIndex.clamp(0, tabs.length - 1);
+
+    final indicatorTint =
+        accentColor.withValues(alpha: 0.16);
 
     return GlassTabBar.bottom(
       tabs: tabs,
-      selectedIndex: selectedIndex.clamp(0, tabs.length - 1),
-      onTabSelected: (index) {
-        HapticFeedback.lightImpact();
-        onTabSelected(index);
-      },
+
+      selectedIndex: safeSelectedIndex,
+
+      onTabSelected: onTabSelected,
+
+      // ----------------------------------------------------------
+      // SIZE
+      // ----------------------------------------------------------
+
       barHeight: barHeight,
+
       barBorderRadius: borderRadius,
+
       horizontalPadding: horizontalPadding,
+
       verticalPadding: bottomMargin,
+
       spacing: 4,
+
       iconLabelSpacing: 3,
+
       iconSize: 21,
+
       labelFontSize: 10.5,
+
+      // ----------------------------------------------------------
+      // INDICATOR
+      // ----------------------------------------------------------
+
       showIndicator: true,
-      quality: quality,
-      magnification: 1.12,
-      indicatorPinchStrength: 0.35, // Subtle liquid-jelly movement when changing tabs
+
       indicatorColor: indicatorTint,
+
+      magnification: 1.10,
+
+      indicatorPinchStrength: 0.28,
+
+      // ----------------------------------------------------------
+      // ICON COLORS
+      // ----------------------------------------------------------
+
+      // ACTIVE
       selectedIconColor: accentColor,
+
+      // IMPORTANT:
+      // Dark icons instead of white.
       unselectedIconColor: unselectedColor,
+
+      // ----------------------------------------------------------
+      // LABEL COLORS
+      // ----------------------------------------------------------
+
       selectedLabelColor: accentColor,
-      unselectedLabelColor: unselectedColor.withValues(alpha: 0.65),
-      glowBlurRadius: 24,
-      glowSpreadRadius: 4,
-      glowOpacity: 0.35,
-      selectedLabelStyle: GoogleFonts.plusJakartaSans(
+
+      // Dark grey instead of translucent white.
+      unselectedLabelColor:
+          unselectedColor.withValues(alpha: 0.72),
+
+      // ----------------------------------------------------------
+      // GLOW
+      // ----------------------------------------------------------
+
+      glowBlurRadius: 20,
+
+      glowSpreadRadius: 2,
+
+      glowOpacity: 0.20,
+
+      // ----------------------------------------------------------
+      // TYPOGRAPHY
+      // ----------------------------------------------------------
+
+      selectedLabelStyle:
+          GoogleFonts.plusJakartaSans(
         fontSize: 10.5,
         fontWeight: FontWeight.w700,
         letterSpacing: -0.1,
+        color: accentColor,
       ),
-      unselectedLabelStyle: GoogleFonts.plusJakartaSans(
+
+      unselectedLabelStyle:
+          GoogleFonts.plusJakartaSans(
         fontSize: 10.5,
         fontWeight: FontWeight.w500,
         letterSpacing: -0.1,
+        color: unselectedColor,
       ),
-      // Real Liquid Glass physical settings:
-      // High refraction, soft specular highlights, natural background absorption
+
+      // ----------------------------------------------------------
+      // MAIN GLASS
+      // ----------------------------------------------------------
+
       settings: LiquidGlassSettings(
-        thickness: 26,
-        blur: 18,
-        refractiveIndex: 1.28,
-        chromaticAberration: 0.012,
+        // Slightly thinner than the previous version.
+        thickness: 22,
+
+        // Enough blur to create glass without washing everything out.
+        blur: 16,
+
+        refractiveIndex: 1.22,
+
+        chromaticAberration: 0.006,
+
         lightAngle: GlassDefaults.lightAngle,
-        lightIntensity: 0.65,
-        ambientStrength: 0.12,
-        saturation: 1.35,
-        glassColor: const Color(0x14FFFFFF), // Ultra-clear translucent glass
-        specularSharpness: GlassSpecularSharpness.sharp,
-        shadowElevation: 2.0,
+
+        // Lower light intensity prevents a white-looking surface.
+        lightIntensity: 0.42,
+
+        ambientStrength: 0.18,
+
+        saturation: 1.05,
+
+        // IMPORTANT:
+        // Previously:
+        // Color(0x14FFFFFF)
+        //
+        // That is almost invisible on a white background.
+        //
+        // Use a very subtle neutral grey glass tint instead.
+        glassColor: const Color(0xD9F4F5F6),
+
+        specularSharpness:
+            GlassSpecularSharpness.medium,
+
+        shadowElevation: 4.0,
+
         shadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.22),
-            blurRadius: 28,
-            spreadRadius: -4,
-            offset: const Offset(0, 10),
+            color: Colors.black.withValues(
+              alpha: 0.12,
+            ),
+            blurRadius: 24,
+            spreadRadius: -5,
+            offset: const Offset(0, 8),
+          ),
+
+          BoxShadow(
+            color: Colors.black.withValues(
+              alpha: 0.04,
+            ),
+            blurRadius: 6,
+            spreadRadius: 0,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
+
+      // ----------------------------------------------------------
+      // ACTIVE INDICATOR GLASS
+      // ----------------------------------------------------------
+
       indicatorSettings: LiquidGlassSettings(
-        thickness: 16,
-        blur: 12,
-        refractiveIndex: 1.18,
-        lightIntensity: 0.5,
-        ambientStrength: 0.08,
-        saturation: 1.2,
+        thickness: 14,
+
+        blur: 10,
+
+        refractiveIndex: 1.16,
+
+        lightIntensity: 0.35,
+
+        ambientStrength: 0.12,
+
+        saturation: 1.05,
+
         glassColor: indicatorTint,
-        specularSharpness: GlassSpecularSharpness.medium,
+
+        specularSharpness:
+            GlassSpecularSharpness.medium,
       ),
     );
   }
