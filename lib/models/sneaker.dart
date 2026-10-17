@@ -188,6 +188,110 @@ class SneakerData {
     badgeColor: AppColors.pastelPink,
   );
 
+  static const Sneaker popularAdidasColour = Sneaker(
+    id: 'adidas-ultraboost-colour',
+    name: 'Adidas Ultraboost',
+    subname: 'Color Splash',
+    brand: 'Adidas',
+    price: 240.00,
+    originalPrice: 320.00,
+    discountPercent: 25,
+    discountTag: '25% OFF',
+    backgroundColor: AppColors.pastelMint,
+    watermark: 'ADIDAS',
+    primaryImageUrl:
+        'assets/img/pngtree-colour-adidas-shoes-png-image_16031447.png',
+    imageAngles: {
+      SneakerViewType.angle:
+          'assets/img/pngtree-colour-adidas-shoes-png-image_16031447.png',
+      SneakerViewType.side:
+          'assets/img/compressed_cc2b6c7d0c91c142817535bc16c459cd.webp',
+      SneakerViewType.top:
+          'assets/img/pair-of-colorful-sports-shoes-for-active-lifestyle-png.webp',
+      SneakerViewType.sole:
+          'assets/img/pngtree-dropshipping-men-hole-sole-jogging-shoes-png-image_11389148.png',
+    },
+    badgeColor: AppColors.pastelMint,
+  );
+
+  static const Sneaker popularSportsPulse = Sneaker(
+    id: 'nike-zoom-pulse',
+    name: 'Nike Zoom Pulse',
+    subname: 'Blush Horizon',
+    brand: 'Nike',
+    price: 215.50,
+    originalPrice: 262.80,
+    discountPercent: 18,
+    discountTag: '18% OFF',
+    backgroundColor: AppColors.pastelPink,
+    watermark: 'ZOOM AIR',
+    primaryImageUrl:
+        'assets/img/pngtree-sports-shoes-png-image_15910407.png',
+    imageAngles: {
+      SneakerViewType.angle:
+          'assets/img/pngtree-sports-shoes-png-image_15910407.png',
+      SneakerViewType.side:
+          'assets/img/colorful-cool-running-sneakers-mockup-vibrant-colors-isolated-on-a-transparent-background-free-png.webp',
+      SneakerViewType.top:
+          'assets/img/pair-of-colorful-sports-shoes-for-active-lifestyle-png.webp',
+      SneakerViewType.sole:
+          'assets/img/pngtree-dropshipping-men-hole-sole-jogging-shoes-png-image_11389148.png',
+    },
+    badgeColor: AppColors.pastelPink,
+  );
+
+  static const Sneaker popularVibrantRunner = Sneaker(
+    id: 'nike-pegasus-runner',
+    name: 'Nike Pegasus V',
+    subname: 'Sunset Glow',
+    brand: 'Nike',
+    price: 285.00,
+    originalPrice: 407.14,
+    discountPercent: 30,
+    discountTag: '30% OFF',
+    backgroundColor: AppColors.pastelPeach,
+    watermark: 'PEGASUS',
+    primaryImageUrl:
+        'assets/img/colorful-cool-running-sneakers-mockup-vibrant-colors-isolated-on-a-transparent-background-free-png.webp',
+    imageAngles: {
+      SneakerViewType.angle:
+          'assets/img/colorful-cool-running-sneakers-mockup-vibrant-colors-isolated-on-a-transparent-background-free-png.webp',
+      SneakerViewType.side:
+          'assets/img/green-running-shoes-png-24.png',
+      SneakerViewType.top:
+          'assets/img/pair-of-colorful-sports-shoes-for-active-lifestyle-png.webp',
+      SneakerViewType.sole:
+          'assets/img/pngtree-dropshipping-men-hole-sole-jogging-shoes-png-image_11389148.png',
+    },
+    badgeColor: AppColors.pastelPeach,
+  );
+
+  static const Sneaker popularAirJordanRetro = Sneaker(
+    id: 'air-jordan-crimson',
+    name: 'Air Jordan High',
+    subname: 'Royal Crimson',
+    brand: 'Nike',
+    price: 480.00,
+    originalPrice: 533.33,
+    discountPercent: 10,
+    discountTag: '10% OFF',
+    backgroundColor: AppColors.pastelLavender,
+    watermark: 'JORDAN',
+    primaryImageUrl:
+        'assets/img/download-nike-shoes-transparent-png-for-designing-projects-16.png',
+    imageAngles: {
+      SneakerViewType.angle:
+          'assets/img/download-nike-shoes-transparent-png-for-designing-projects-16.png',
+      SneakerViewType.side:
+          'assets/img/512b4b870390fac58da5206e88d228d6.png',
+      SneakerViewType.top:
+          'assets/img/pair-of-colorful-sports-shoes-for-active-lifestyle-png.webp',
+      SneakerViewType.sole:
+          'assets/img/pngtree-dropshipping-men-hole-sole-jogging-shoes-png-image_11389148.png',
+    },
+    badgeColor: AppColors.pastelLavender,
+  );
+
   static List<Sneaker> get featuredSneakers => [
         featuredJordanPrototype,
         featuredMintAirMax,
@@ -196,6 +300,10 @@ class SneakerData {
   static List<Sneaker> get popularSneakers => [
         popularJordanWhite,
         popularMidCoconut,
+        popularAdidasColour,
+        popularSportsPulse,
+        popularVibrantRunner,
+        popularAirJordanRetro,
       ];
 
   static List<Sneaker> get cartSneakers => [

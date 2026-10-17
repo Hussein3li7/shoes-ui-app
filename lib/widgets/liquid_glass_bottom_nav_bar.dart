@@ -232,13 +232,13 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
       indicatorSettings: LiquidGlassSettings(
         // Keep the indicator visually glass-like,
         // but avoid strong distortion during movement.
-        thickness: 4,
+        thickness: 10,
 
         // Very low blur.
         blur: 0,
 
         // Almost neutral refraction.
-        refractiveIndex: 1.01,
+        refractiveIndex: .5,
 
         // Disable chromatic distortion.
         chromaticAberration: 0.0,
