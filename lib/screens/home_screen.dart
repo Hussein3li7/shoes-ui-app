@@ -5,7 +5,7 @@ import '../theme/app_theme.dart';
 import '../widgets/brand_chip.dart';
 import '../widgets/featured_product_card.dart';
 import '../widgets/popular_product_card.dart';
-import '../widgets/bottom_navigation.dart';
+import '../widgets/liquid_glass_bottom_nav_bar.dart';
 import 'product_details_screen.dart';
 import 'payment_method_screen.dart';
 
@@ -265,20 +265,21 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-            // FLOATING NOTCHED BOTTOM NAVIGATION BAR
+            // FLOATING APPLE-STYLE LIQUID GLASS BOTTOM NAVIGATION BAR
             Positioned(
               left: 0,
               right: 0,
               bottom: 0,
-              child: LuxuryBottomNav(
+              child: LiquidGlassBottomNavigationBar(
                 selectedIndex: _currentNavIndex,
-                onItemSelected: (index) {
+                onTabSelected: (index) {
                   setState(() => _currentNavIndex = index);
-                  if (index == 2) {
+                  if (index == 1) {
+                    _showSearchModal();
+                  } else if (index == 2) {
                     _navigateToCart();
                   }
                 },
-                onSearchPressed: _showSearchModal,
               ),
             ),
           ],
