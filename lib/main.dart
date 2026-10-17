@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'screens/home_screen.dart';
+import 'screens/splash_screen.dart';
 import 'theme/app_theme.dart';
 
 void main() async {
@@ -25,7 +26,12 @@ void main() async {
 }
 
 class SneakerCommerceApp extends StatelessWidget {
-  const SneakerCommerceApp({super.key});
+  final bool showSplash;
+
+  const SneakerCommerceApp({
+    super.key,
+    this.showSplash = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +39,7 @@ class SneakerCommerceApp extends StatelessWidget {
       title: 'Sneaker Collections',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const HomeScreen(),
+      home: showSplash ? const VideoSplashScreen() : const HomeScreen(),
     );
   }
 }

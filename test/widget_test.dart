@@ -6,8 +6,8 @@ import 'package:test_app/widgets/custom_curved_size_selector.dart';
 import 'package:test_app/widgets/featured_product_card.dart';
 
 void main() {
-  testWidgets('App loads and renders SneakerCommerceApp', (WidgetTester tester) async {
-    await tester.pumpWidget(const SneakerCommerceApp());
+  testWidgets('App loads and renders SneakerCommerceApp directly', (WidgetTester tester) async {
+    await tester.pumpWidget(const SneakerCommerceApp(showSplash: false));
     await tester.pump();
 
     // Verify header, popular section, and brands are present
@@ -16,8 +16,17 @@ void main() {
     expect(find.text('Nike'), findsOneWidget);
   });
 
+  testWidgets('VideoSplashScreen renders with Skip button and fallback branding', (WidgetTester tester) async {
+    await tester.pumpWidget(const SneakerCommerceApp(showSplash: true));
+    await tester.pump();
+
+    // Verify Skip button is available
+    expect(find.text('Skip'), findsOneWidget);
+    expect(find.text('SNEAKER VAULT'), findsOneWidget);
+  });
+
   testWidgets('Tapping product navigates with Hero animation to ProductDetailsScreen', (WidgetTester tester) async {
-    await tester.pumpWidget(const SneakerCommerceApp());
+    await tester.pumpWidget(const SneakerCommerceApp(showSplash: false));
     await tester.pump();
 
     // Tap first featured card

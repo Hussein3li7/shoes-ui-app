@@ -37,6 +37,7 @@ dependencies:
   liquid_glass_widgets: ^0.18.4
   google_fonts: ^8.1.0
   model_viewer_plus: ^1.9.3
+  video_player: ^2.10.1
 
 dev_dependencies:
   flutter_test:
@@ -63,7 +64,7 @@ flutter:
   assets:
     - assets/img/
     - assets/models/
-    - sneaker_from_png.glb
+    - assets/intro.mp4
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
