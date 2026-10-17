@@ -7,6 +7,7 @@ import '../widgets/custom_curved_size_selector.dart';
 import '../widgets/orbit_control.dart';
 import '../widgets/quantity_selector.dart';
 import '../widgets/sneaker_display.dart';
+import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'payment_method_screen.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
@@ -189,19 +190,63 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             ),
           ),
 
-          // Central Floating & Rotating Sneaker
+          // Central Floating & Rotating Sneaker or 3D Model
           Positioned(
-            top: 10,
-            child: SneakerDisplay(
-              sneaker: _sneaker,
-              viewType: _selectedView,
-              width: 270,
-              height: 185,
-              rotationAngleDeg: _rotationAngle,
-              tiltAngle: -0.16,
-              showFloatingShadow: true,
-              heroTag: 'sneaker_${_sneaker.id}',
-            ),
+            top: (_sneaker.model3dUrl != null ||
+                    _sneaker.primaryImageUrl
+                        .contains('512b4b870390fac58da5206e88d228d6'))
+                ? 0
+                : 10,
+            child: (_sneaker.model3dUrl != null ||
+                    _sneaker.primaryImageUrl
+                        .contains('512b4b870390fac58da5206e88d228d6'))
+                ? SizedBox(
+                    width: 290,
+                    height: 230,
+                    child: Hero(
+                      tag: 'sneaker_${_sneaker.id}',
+                      flightShuttleBuilder: (
+                        flightContext,
+                        animation,
+                        flightDirection,
+                        fromHeroContext,
+                        toHeroContext,
+                      ) {
+                        return Material(
+                          type: MaterialType.transparency,
+                          child: SneakerDisplay(
+                            sneaker: _sneaker,
+                            viewType: _selectedView,
+                            width: 270,
+                            height: 185,
+                            rotationAngleDeg: _rotationAngle,
+                            tiltAngle: -0.16,
+                            showFloatingShadow: false,
+                          ),
+                        );
+                      },
+                      child: ModelViewer(
+                        key: ValueKey('3d_model_${_sneaker.id}'),
+                        src: _sneaker.model3dUrl ??
+                            'assets/models/sneaker_from_png.glb',
+                        alt: '${_sneaker.name} 3D Model',
+                        autoRotate: true,
+                        cameraControls: true,
+                        backgroundColor: const Color(0x00000000),
+                        shadowIntensity: 1.0,
+                      ),
+                    ),
+                  )
+                : SneakerDisplay(
+                    sneaker: _sneaker,
+                    viewType: _selectedView,
+                    width: 270,
+                    height: 185,
+                    rotationAngleDeg: _rotationAngle,
+                    tiltAngle: -0.16,
+                    showFloatingShadow: true,
+                    heroTag: 'sneaker_${_sneaker.id}',
+                  ),
           ),
         ],
       ),

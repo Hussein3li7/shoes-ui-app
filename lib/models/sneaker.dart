@@ -22,6 +22,7 @@ class Sneaker {
   final Map<SneakerViewType, String> imageAngles;
   final String primaryImageUrl;
   final Color badgeColor;
+  final String? model3dUrl;
 
   const Sneaker({
     required this.id,
@@ -37,6 +38,7 @@ class Sneaker {
     required this.imageAngles,
     required this.primaryImageUrl,
     required this.badgeColor,
+    this.model3dUrl,
   });
 
   String get formattedPrice => '\$${price.toStringAsFixed(2)}';
@@ -131,6 +133,7 @@ class SneakerData {
           'assets/img/pngtree-dropshipping-men-hole-sole-jogging-shoes-png-image_11389148.png',
     },
     badgeColor: AppColors.pastelBlue,
+    model3dUrl: 'assets/models/sneaker_from_png.glb',
   );
 
   static const Sneaker popularMidCoconut = Sneaker(
