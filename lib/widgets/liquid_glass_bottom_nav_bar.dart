@@ -3,18 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
+import 'package:flutter/services.dart';
+
 /// Navigation item model for [LiquidGlassBottomNavigationBar].
 class LiquidGlassNavItem {
   final String label;
   final IconData icon;
   final IconData? activeIcon;
   final Color? glowColor;
+  final int? badgeCount;
 
   const LiquidGlassNavItem({
     required this.label,
     required this.icon,
     this.activeIcon,
     this.glowColor,
+    this.badgeCount,
   });
 }
 
@@ -73,8 +77,8 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
   /// Default 5 destinations matching the reference layout:
   /// 1. Home
   /// 2. Search
-  /// 3. Library
-  /// 4. Favorites
+  /// 3. Library (with cart badge)
+  /// 4. Favorites (with wishlist badge)
   /// 5. Profile
   static const List<LiquidGlassNavItem> defaultItems = [
     LiquidGlassNavItem(
@@ -91,11 +95,13 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
       label: 'Library',
       icon: CupertinoIcons.square_stack_3d_up,
       activeIcon: CupertinoIcons.square_stack_3d_up_fill,
+      badgeCount: 3,
     ),
     LiquidGlassNavItem(
       label: 'Favorites',
       icon: CupertinoIcons.heart,
       activeIcon: CupertinoIcons.heart_fill,
+      badgeCount: 2,
     ),
     LiquidGlassNavItem(
       label: 'Profile',
@@ -108,11 +114,30 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = customItems ?? defaultItems;
 
-    // Convert items to native GlassTab configurations
+    // Convert items to native GlassTab configurations with badge support
     final tabs = items.map((item) {
+      Widget buildIcon(IconData iconData) {
+        final base = Icon(iconData);
+        if (item.badgeCount != null && item.badgeCount! > 0) {
+          return Badge(
+            backgroundColor: accentColor,
+            label: Text(
+              '${item.badgeCount}',
+              style: const TextStyle(
+                fontSize: 9,
+                fontWeight: FontWeight.w800,
+                color: Colors.white,
+              ),
+            ),
+            child: base,
+          );
+        }
+        return base;
+      }
+
       return GlassTab(
-        icon: Icon(item.icon),
-        activeIcon: Icon(item.activeIcon ?? item.icon),
+        icon: buildIcon(item.icon),
+        activeIcon: buildIcon(item.activeIcon ?? item.icon),
         label: item.label,
         glowColor: item.glowColor ?? accentColor.withValues(alpha: 0.35),
       );
@@ -124,7 +149,10 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
     return GlassTabBar.bottom(
       tabs: tabs,
       selectedIndex: selectedIndex.clamp(0, tabs.length - 1),
-      onTabSelected: onTabSelected,
+      onTabSelected: (index) {
+        HapticFeedback.lightImpact();
+        onTabSelected(index);
+      },
       barHeight: barHeight,
       barBorderRadius: borderRadius,
       horizontalPadding: horizontalPadding,
