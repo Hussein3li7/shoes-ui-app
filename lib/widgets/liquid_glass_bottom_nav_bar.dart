@@ -205,17 +205,17 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
       // MAIN GLASS
       // ----------------------------------------------------------
       settings: LiquidGlassSettings(
-        thickness: 2,
-        blur: 0,
-        refractiveIndex: 1.02,
-        chromaticAberration: 0.0,
+        thickness: 20,
+        blur: 5,
+        refractiveIndex: 1.2,
+        chromaticAberration: 0.01,
         lightAngle: GlassDefaults.lightAngle,
-        lightIntensity: 0.22,
-        ambientStrength: 0.08,
-        saturation: 1.0,
+        lightIntensity: 0.5,
+        ambientStrength: 0.0,
+        saturation: 1.5,
         glassColor: const Color(0x18FFFFFF),
         specularSharpness: GlassSpecularSharpness.medium,
-        shadowElevation: 3.0,
+        shadowElevation: 1.0,
         shadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.10),
@@ -232,26 +232,26 @@ class LiquidGlassBottomNavigationBar extends StatelessWidget {
       indicatorSettings: LiquidGlassSettings(
         // Keep the indicator visually glass-like,
         // but avoid strong distortion during movement.
-        thickness: 10,
+        thickness: 20,
 
         // Very low blur.
-        blur: 0,
+        blur: 5,
 
         // Almost neutral refraction.
-        refractiveIndex: .5,
+        refractiveIndex: 1.2,
 
         // Disable chromatic distortion.
-        chromaticAberration: 0.0,
+        chromaticAberration: 0.01,
 
         lightAngle: GlassDefaults.lightAngle,
 
         // Very subtle reflection.
-        lightIntensity: 0.18,
+        lightIntensity: 0.5,
 
         // Minimal ambient effect.
-        ambientStrength: 0.05,
+        ambientStrength: 0.0,
 
-        saturation: 1.0,
+        saturation: 1.5,
 
         // Transparent glass.
         glassColor: const Color(0x12000000),
